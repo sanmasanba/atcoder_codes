@@ -1,0 +1,130 @@
+{
+	"python_template": {
+		"prefix": "calltemplate",
+		"body": [
+			"#library",
+			"import sys, re",
+			"from math import ceil, floor, sqrt, pi, gcd",
+			"from collections import deque, Counter",
+			"from bisect import bisect, bisect_left, bisect_right",
+			"from functools import lru_cache",
+			"",
+			"sys.setrecursionlimit(500000)",
+			"INF = float('inf')",
+			"",
+			"#main",
+			"def main():",
+			"\t$1",
+			"",
+			"if __name__ == '__main__':",
+			"\tmain()"
+		],
+	},
+
+	"複数回の(A, B)を別々に保存": {
+		"prefix": "inputAB",
+		"body": [
+			"A, B = [], []",
+			"for _ in range(N):",
+			"\ta, b = map(int, input().split(' '))",
+			"\tA.append(a)",
+			"\tB.append(b)",
+			"$1"
+		]
+	},
+
+	"１入力": {
+		"prefix": "inputN",
+		"body": [
+			"N = int(input())",
+			"$1"
+		]
+	},
+
+	"２入力": {
+		"prefix": "inputNM",
+		"body": [
+			"N, M = map(int, input().split(' '))",
+			"$1"
+		]
+	},
+
+	"複数回の１入力": {
+		"prefix": "inputL",
+		"body": [
+			"L = [int(input()) for _ in range(N)]",
+			"$1"
+		]
+	},
+
+	"複数回のN入力": {
+		"prefix": "inputQueryXY",
+		"body": [
+			"Q = [list(map(int, input().split(' '))) for _ in range(N)]",
+			"$1"
+		]
+	},
+
+	"[A_1, A_2, A_3, ...]": {
+		"prefix": "inputA",
+		"body": [
+			"A = list(map(int, input().split(' ')))",
+			"$1"
+		]
+	},
+
+	"['a', 't', 'c', ...]": {
+		"prefix": "inputS",
+		"body": [
+			"S = list(input())",
+			"$1"
+		]
+	},
+
+	"三項演算子": {
+		"prefix": "3if",
+		"body": [
+			"$1 if $2 else $3",
+		]
+	},
+
+	"素因数の列挙": {
+		"prefix": "prime_factorization",
+		"body": [
+			"#prime_factorization",
+			"def prime_factorization(N) -> list:",
+		    "\tres = []",
+		    "\tfor p in range(2, N):",
+    	    	"\t\tif p * p > N:",
+        		    "\t\t\tbreak",
+        		"\t\tif N % p != 0:",
+            		"\t\t\tcontinue",
+        		"\t\te = 0",
+	        	"\t\twhile N % p == 0:",
+            		"\t\t\te += 1",
+            		"\t\t\tN //= p",
+        		"\t\tres.append((p, e))",
+    		"\tif N != 1:",
+		        "\t\tres.append((N, 1))",
+    		"\treturn res"
+		],
+	},
+
+	"bit全探索": {
+		"prefix": "bitsearch",
+		"body": [
+			"#bit_search",
+			"res = 0",
+			"for i in range(2**N):",
+    			"\t#ここで判定用の変数を初期化する",
+    			"\t#ex) total = 0",
+    			"\tfor j in range(N):",
+        			"\t\tif (i >> j) & 1:",
+            			"\t\t\t#ここで何か操作を入れる",
+            			"\t\t\t#total += list[j]",
+    			"\t#組み合わせに関して、要素を満たすか判定する",
+    			"\t#ex) if total == target:",
+    			"\t#       res += 1"
+		]
+	}
+}
