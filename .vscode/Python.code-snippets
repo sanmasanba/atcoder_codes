@@ -8,8 +8,9 @@
 			"from collections import deque, Counter",
 			"from bisect import bisect, bisect_left, bisect_right",
 			"from functools import lru_cache",
+			"from itertools import permutations, combinations",
 			"",
-			"sys.setrecursionlimit(500000)",
+			"sys.setrecursionlimit(10**6)",
 			"INF = float('inf')",
 			"",
 			"#main",
@@ -58,7 +59,7 @@
 	},
 
 	"複数回のN入力": {
-		"prefix": "inputQueryXY",
+		"prefix": "inputQ",
 		"body": [
 			"Q = [list(map(int, input().split(' '))) for _ in range(N)]",
 			"$1"
@@ -77,6 +78,38 @@
 		"prefix": "inputS",
 		"body": [
 			"S = list(input())",
+			"$1"
+		]
+	},
+
+	"simple_graph": {
+		"prefix": "input_simpleG",
+		"body": [
+			"N, M = map(int, input().split(' '))",
+			"G = [[] for _ in range(N)]",
+			"for _ in range(M):",
+				"\ta, b = map(int, input().split(' '))",
+				"\tG[a].append(b)",
+				"\t# 有向グラフは次の列を削除",
+				"\tG[b].append(a)",
+			"$1"
+		]
+	},
+
+	"weighted_graph": {
+		"prefix": "input_weightedG",
+		"body": [
+			"N, M = map(int, input().split(' '))",
+			"G = {}",
+			"for _ in range(M):",
+				"\ts, g, weight = map(int, input().split(' '))",
+				"\tif s not in G:",
+					"\t\tG[s] = {}",
+				"\tG[s][g] = weight",
+				"\t# 有向グラフは下の列を削除",
+				"\tif g not in G:",
+					"\t\tG[g] = {}",
+				"\tG[g][s] = weight",
 			"$1"
 		]
 	},
@@ -110,6 +143,24 @@
 		],
 	},
 
+	"素因数の判定": {
+		"prefix": "prime_test",
+		"body": [
+			"#prime_test",
+			"def prime_test(N):",
+		    "\tres = 'Yes'",
+		    "\tfor p in range(2, N):",
+    	    	"\t\tif p * p > N:",
+        		    "\t\t\tbreak",
+        		"\t\tif N % p != 0:",
+            		"\t\t\tcontinue",
+	        	"\t\tif N % p == 0:",
+            		"\t\t\tres = 'No'",
+            		"\t\t\tbreak",
+    		"\treturn res"
+		],
+	},
+
 	"bit全探索": {
 		"prefix": "bitsearch",
 		"body": [
@@ -126,5 +177,44 @@
     			"\t#ex) if total == target:",
     			"\t#       res += 1"
 		]
-	}
+	},
+
+	"幅優先探索": {
+		"prefix": "bfs",
+		"body": [
+			"#BFS",
+			"def bfs(G, N, s, g):",
+				"\t# dist:vからの距離, queue:探索キュー",
+				"\tdist = [-1 for _ in range(N+1)]",
+				"\tqueue = deque()",
+				"\tdist[s] = 0",
+				"\tqueue.append(s)",
+				"\twhile queue:",
+					"\t\tv = queue.popleft()",
+					"\t\tfor next_v in G[v]:",
+						"\t\t\tif dist[next_v] != -1:",
+							"\t\t\t\tcontinue",
+						"\t\t\tdist[next_v] = dist[v] + 1",
+						"\t\t\tqueue.append(next_v)",
+				"\treturn dist[g]",
+		]
+	},
+
+	"深さ優先探索": {
+		"prefix": "dfs",
+		"body": [
+			"# DFS",
+			"seen = set()",
+			"def dfs(G, v):",
+				"\t# 頂点vを探索済みにする",
+				"\tseen.add(v)",
+				"",
+				"\t# 探索",
+				"\tfor next_v in G[v]:",
+					"\t\t# 探索済みならスルー",
+					"\t\tif next_v in G:",
+						"\t\t\tcontinue",
+					"\t\tdfs(G, next_v)",
+		]
+	},
 }
