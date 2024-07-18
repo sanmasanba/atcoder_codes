@@ -166,13 +166,13 @@
 		"body": [
 			"#bit_search",
 			"res = 0",
-			"for i in range(2**N):",
+			"for bit in range(2**N):",
     			"\t#ここで判定用の変数を初期化する",
     			"\t#ex) total = 0",
-    			"\tfor j in range(N):",
-        			"\t\tif (i >> j) & 1:",
+    			"\tfor i in range(N):",
+        			"\t\tif (bit >> i) & 1:",
             			"\t\t\t#ここで何か操作を入れる",
-            			"\t\t\t#total += list[j]",
+            			"\t\t\t#total += list[i]",
     			"\t#組み合わせに関して、要素を満たすか判定する",
     			"\t#ex) if total == target:",
     			"\t#       res += 1"
@@ -215,6 +215,32 @@
 					"\t\tif next_v in G:",
 						"\t\t\tcontinue",
 					"\t\tdfs(G, next_v)",
+		]
+	},
+
+	"二分探索": {
+		"prefix": "binarysearch",
+		"body": [
+			"# binary search",
+			"def binary_search(array, target):",
+    			"\t# 最大と最小の設定",
+    			"\tlow = 0",
+    			"\thigh = len(array) - 1",
+				"",
+    			"\t# 探索開始",
+    			"\t# lowとhighが一致するまで(一致した点が挿入する点)",
+    			"\twhile low <= high:",
+        		"\t# 中間点の設定",
+        			"\t\tmid = (low + high) // 2",
+        			"\t\tmid_value = array[mid]",
+					"",
+        			"\t\tif mid_value == target:",
+            			"\t\t\treturn mid",
+        			"\t\telif mid_value < target:",
+            			"\t\t\tlow = mid + 1",
+        			"\t\telse:",
+            			"\t\t\thigh = mid - 1",
+    			"\treturn -1",
 		]
 	},
 }
