@@ -212,7 +212,7 @@
 				"\t# 探索",
 				"\tfor next_v in G[v]:",
 					"\t\t# 探索済みならスルー",
-					"\t\tif next_v in G:",
+					"\t\tif next_v in seen:",
 						"\t\t\tcontinue",
 					"\t\tdfs(G, next_v)",
 		]
@@ -241,6 +241,49 @@
         			"\t\telse:",
             			"\t\t\thigh = mid - 1",
     			"\treturn -1",
+		]
+	},
+
+	"左二分探索": {
+		"prefix": "binary_search_left",
+		"body": [
+			"# binary search left",
+			"def binary_search_left(array, target):",
+    			"\tlow = 0",
+    			"\thigh = len(array)-1",
+    			"\twhile low < high:",
+        			"\t\t# midの設定",
+        			"\t\tmid = (high+low)//2",
+        			"\t\t# もし中心の値より目標値が低いなら",
+        			"\t\tif array[mid] >= target:",
+            			"\t\t\t# targetは、[mid, high]",
+            			"\t\t\thigh = mid",
+        			"\t\t# もし中心の値より目標値が高いなら",
+        			"\t\telse:",
+            			"\t\t\t# targetは、[low, mid]",
+            			"\t\t\tlow = mid+1",
+    			"\treturn low",
+		]
+	},
+
+	"右二分探索": {
+		"prefix": "binary_search_right",
+		"body": [
+			"def binary_search_right(array, target):",
+				"\tlow = 0",
+				"\thigh = len(array)-1",
+				"\twhile low < high:",
+					"\t\t# midの設定",
+					"\t\tmid = (high+low)//2",
+					"\t\t# もし中心の値より目標値が低いなら",
+					"\t\tif array[mid] > target:",
+						"\t\t\t# targetは、[mid, high)",
+						"\t\t\thigh = mid",
+					"\t\t# もし中心の値より目標値が高いなら",
+					"\t\telse:",
+						"\t\t\t# targetは、[low, mid)",
+						"\t\t\tlow = mid+1",
+				"\treturn low",
 		]
 	},
 }
