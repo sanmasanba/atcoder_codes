@@ -1,5 +1,9 @@
 競技プログラミングの勉強やコンテストに参加したときのコードや、ライブラリ、アルゴリズムなどに関してまとめています。
 
+現在のAC状況(2024-07-29 14:45:22 実行)   
+> atcoder&nbsp;:&emsp;00252  
+> AOJ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&emsp;00015  
+
 ```
 atcoder_codes/ 
    ├──.vscode/  
