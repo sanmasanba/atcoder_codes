@@ -286,4 +286,43 @@
 				"\treturn low",
 		]
 	},
+
+	"三次元累積和": {
+		"prefix": "cumsum3d",
+		"body": [
+			"def cumsum3d(n:int, a:list):",
+				"\ttmp = [[[0] * (n + 1) for _ in range(n + 1)] for _ in range(n + 1)]",
+				"\tfor i in range(n):",
+					"\t\tfor j in range(n):",
+						"\t\t\tfor k in range(n):",
+							"\t\t\t\ttmp[i + 1][j + 1][k + 1] = (",
+								"\t\t\t\t\ttmp[i][j+1][k+1]",
+								"\t\t\t\t\t+ tmp[i+1][j][k+1]",
+								"\t\t\t\t\t+ tmp[i+1][j+1][k]",
+								"\t\t\t\t\t- tmp[i][j][k+1]",
+								"\t\t\t\t\t- tmp[i][j+1][k]",
+								"\t\t\t\t\t- tmp[i+1][j][k]",
+								"\t\t\t\t\t+ tmp[i][j][k]",
+								"\t\t\t\t\t+ a[i][j][k]",
+								"\t\t\t\t)",
+				"\treturn tmp"
+		]
+	},
+
+	"二次元累積和": {
+		"prefix": "cumsum2d",
+		"body": [
+			"def cumsum2d(n:int, a:list):",
+				"\ttmp = [[0] * (n+1) for _ in range(n+1)]",
+				"\tfor i in range(n):",
+					"\t\tfor j in range(n):",
+						"\t\t\ttmp[i+1][j+1] = (",
+							"\t\t\t\ttmp[i+1][j]",
+							"\t\t\t\t+ tmp[i][j+1]",
+							"\t\t\t\t- tmp[i][j]",
+							"\t\t\t\t+ a[i][j]",
+							"\t\t\t\t)",
+				"\treturn tmp",
+		]
+	},
 }
