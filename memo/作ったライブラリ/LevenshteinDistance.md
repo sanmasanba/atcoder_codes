@@ -17,5 +17,4 @@ def LevenshteinDistance(s1:str, s2:str):
 ```
 
 # 引用
-1. 編集距離（レーベンシュタイン距離）を理解し、実装する
->https://qiita.com/tanuk1647/items/5a591da10e2ea5bedef6
+1. [編集距離（レーベンシュタイン距離）を理解し、実装する](https://qiita.com/tanuk1647/items/5a591da10e2ea5bedef6)
