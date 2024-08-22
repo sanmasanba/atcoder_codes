@@ -4,7 +4,7 @@
 		"body": [
 			"#library",
 			"import sys, re",
-			"from math import ceil, floor, sqrt, pi, gcd",
+			"from math import ceil, floor, sqrt, pi, gcd, lcm",
 			"import heapq",
 			"from collections import deque, Counter, defaultdict",
 			"from bisect import bisect, bisect_left, bisect_right",
