@@ -101,16 +101,12 @@
 		"prefix": "input_weightedG",
 		"body": [
 			"N, M = map(int, input().split(' '))",
-			"G = {}",
+			"G = defaultdict(list)",
 			"for _ in range(M):",
 				"\ts, g, weight = map(int, input().split(' '))",
-				"\tif s not in G:",
-					"\t\tG[s] = {}",
-				"\tG[s][g] = weight",
+				"\tG[s].append((g, weight))",
 				"\t# 有向グラフは下の列を削除",
-				"\tif g not in G:",
-					"\t\tG[g] = {}",
-				"\tG[g][s] = weight",
+				"\tG[g].append((s, weight))",
 			"$1"
 		]
 	},
@@ -335,6 +331,7 @@
 				"\t###",
 				"\t#",
 				"\t# UnionFindの実装",
+				"\t# https://note.nkmk.me/python-union-find/",
 				"\t#",
 				"\t###",
 				"\tdef __init__(self, n):",
@@ -703,4 +700,30 @@
 			"move = {'U':[-1, 0], 'D':[1, 0], 'L':[0, -1], 'R':[0, 1]}"
 	]
 	},
+
+	"": {
+		"prefix": "dijkstra",
+		"body": [
+			"def dijkstra(G, N, s):",
+				"\tdistances = [INF] * N",
+				"\tdistances[s] = 0",
+				"",
+				"\ttarget_nodes = []",
+				"\theappush(target_nodes, (0, s))",
+				"",
+				"\twhile target_nodes:",
+					"\t\tcurrent_dist, current_node = heappop(target_nodes)",
+					"",
+					"\t\tif current_dist > distances[current_node]:",
+						"\t\t\tcontinue",
+					"",
+					"\t\tfor next_node, weight in G[current_node]:",
+						"\t\t\tdist = current_dist + weight",
+						"\t\t\tif dist < distances[next_node]:",
+							"\t\t\t\tdistances[next_node] = dist",
+							"\t\t\t\theappush(target_nodes, (dist, next_node))",
+				"",
+			"\treturn distances",
+		]
+	}
 }
