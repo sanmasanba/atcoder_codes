@@ -10,29 +10,28 @@ from itertools import permutations, combinations
 sys.setrecursionlimit(10**6)
 INF = float('inf')
 # DFS
-
 N, K = map(int, input().split(' '))
-G = {i:set() for i in range(1, N+1)}
+G = defaultdict(set)
 for _ in range(N-1):
-    a, b = map(int, input().split(' '))
-    if a > b:
-        a, b = b, a
+    a, b = map(lambda x:int(x)-1, input().split(' '))
     G[a].add(b)
-V = set(map(int, input().split(' ')))
+    G[b].add(a)
+V = set(map(lambda x:int(x)-1, input().split(' ')))
 
-def dfs(G, v):
-    child_set = set([v])
-    # 探索
+seen = [False] * N
+ans = 0
+
+def dfs(v):
+    seen[v] = True
+    res = False
+    global ans
     for next_v in G[v]:
-        if next_v in G:
-            child_set |= dfs(G, next_v)
-    # print(v, child_set)
-    if child_set.isdisjoint(V):
-        # print(f"remove {v}")
-        G.pop(v)
-    return child_set
+        if seen[next_v]:
+            continue
+        res |= dfs(next_v)
+    res = v in V or res
+    ans += 1 if res else 0
+    return res
 
-for v in V:
-    dfs(G, v)
-
-print(len(G))
+dfs(min(V))
+print(ans)

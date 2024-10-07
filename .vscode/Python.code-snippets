@@ -701,7 +701,7 @@
 	]
 	},
 
-	"": {
+	"ダイクストラ法": {
 		"prefix": "dijkstra",
 		"body": [
 			"def dijkstra(G, N, s):",
@@ -725,5 +725,13 @@
 				"",
 			"\treturn distances",
 		]
-	}
+	},
+
+	"フェルマーの小定理を使った逆元": {
+		"prefix": "modinv",
+		"body": [
+			"def mod_inverse(a, p):",
+				"\treturn pow(a, p-2, p)"
+		]
+	},
 }

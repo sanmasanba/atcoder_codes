@@ -12,17 +12,24 @@ INF = float('inf')
 
 #main
 def main():
+    # input
     N = int(input())
     H = list(map(int, input().split(' ')))
-    max_h = [0 for _ in range(N)]
-
-    tmp_max = 0
-    for i in range(N):
-        if i == 0:
-            max_h[i] = H[i]
-        else:
-            max_h[i] = max(H[i], max_h[i-1])
-    print(max_h)
+    
+    H.reverse()
+    stack = []
+    res = [0] * N
+    for i in range(N-1):
+        while stack:
+            if stack[-1] < H[i]:
+                stack.pop()
+            else:
+                break
+        stack.append(H[i])
+        res[i+1] = len(stack)
+    
+    # output
+    print(*reversed(res))
 
 if __name__ == '__main__':
     main()
