@@ -7,8 +7,6 @@ from bisect import bisect, bisect_left, bisect_right
 from functools import lru_cache, cmp_to_key
 from itertools import permutations, combinations
 
-# ライブラリはここに貼り付け
-
 sys.setrecursionlimit(10**6)
 INF = float('inf')
 
