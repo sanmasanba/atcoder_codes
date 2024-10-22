@@ -1,40 +1,42 @@
 {
+	// テンプレ
 	"python_template": {
 		"prefix": "calltemplate",
 		"body": [
 			"#library",
 			"import sys, re",
-			"from math import ceil, floor, sqrt, pi, gcd, lcm",
-			"import heapq",
+			"from math import ceil, floor, sqrt, pi, gcd, lcm, factorial",
+			"from operator import mul",
+			"from heapq import heappush, heappop",
 			"from collections import deque, Counter, defaultdict",
 			"from bisect import bisect, bisect_left, bisect_right",
-			"from functools import lru_cache, cmp_to_key",
-			"from itertools import permutations, combinations",
+			"from functools import lru_cache, cmp_to_key, reduce",
+			"from itertools import permutations, combinations, accumulate",
+			"from typing import Generic, Iterable, Iterator, \\",
+				"\tList, Tuple, Dict, TypeVar, Optional, Any, Callable",
+			"T = TypeVar('T')",
 			"",
 			"sys.setrecursionlimit(10**6)",
 			"INF = float('inf')",
 			"",
 			"#main",
 			"def main():",
-			"\t$1",
+				"\t# intput",
+				"\t$1",
 			"",
 			"if __name__ == '__main__':",
 			"\tmain()"
 		],
 	},
 
+	// 入力
 	"複数回の(A, B)を別々に保存": {
 		"prefix": "inputAB",
 		"body": [
-			"A, B = [], []",
-			"for _ in range(N):",
-			"\ta, b = map(int, input().split(' '))",
-			"\tA.append(a)",
-			"\tB.append(b)",
+			"A, B = map(list, zip(*[list(map(int, input().split(' '))) for _ in range(N)]))",
 			"$1"
 		]
 	},
-
 	"１入力": {
 		"prefix": "inputN",
 		"body": [
@@ -42,7 +44,6 @@
 			"$1"
 		]
 	},
-
 	"２入力": {
 		"prefix": "inputNM",
 		"body": [
@@ -50,7 +51,6 @@
 			"$1"
 		]
 	},
-
 	"複数回の１入力": {
 		"prefix": "inputL",
 		"body": [
@@ -58,7 +58,6 @@
 			"$1"
 		]
 	},
-
 	"複数回のN入力": {
 		"prefix": "inputQ",
 		"body": [
@@ -66,7 +65,6 @@
 			"$1"
 		]
 	},
-
 	"[A_1, A_2, A_3, ...]": {
 		"prefix": "inputA",
 		"body": [
@@ -74,7 +72,6 @@
 			"$1"
 		]
 	},
-
 	"['a', 't', 'c', ...]": {
 		"prefix": "inputS",
 		"body": [
@@ -82,7 +79,6 @@
 			"$1"
 		]
 	},
-
 	"simple_graph": {
 		"prefix": "input_simpleG",
 		"body": [
@@ -96,7 +92,6 @@
 			"$1"
 		]
 	},
-
 	"weighted_graph": {
 		"prefix": "input_weightedG",
 		"body": [
@@ -111,13 +106,16 @@
 		]
 	},
 
-	"三項演算子": {
-		"prefix": "3if",
+	// 出力
+	"Yes or No": {
+		"prefix": "output_Yes_No",
 		"body": [
-			"$1 if $2 else $3",
+			"print('Yes' if res else 'No')",
+			"$1"
 		]
 	},
 
+	// 整数・素数
 	"素因数の列挙": {
 		"prefix": "prime_factorization",
 		"body": [
@@ -139,7 +137,6 @@
     		"\treturn res"
 		],
 	},
-
 	"素因数の判定": {
 		"prefix": "prime_test",
 		"body": [
@@ -157,138 +154,116 @@
     		"\treturn res"
 		],
 	},
-
-	"bit全探索": {
-		"prefix": "bitsearch",
+	"フェルマーの小定理を使った逆元": {
+		"prefix": "modinv",
 		"body": [
-			"#bit_search",
-			"res = 0",
-			"for bit in range(2**N):",
-    			"\t#ここで判定用の変数を初期化する",
-    			"\t#ex) total = 0",
-    			"\tfor i in range(N):",
-        			"\t\tif (bit >> i) & 1:",
-            			"\t\t\t#ここで何か操作を入れる",
-            			"\t\t\t#total += list[i]",
-    			"\t#組み合わせに関して、要素を満たすか判定する",
-    			"\t#ex) if total == target:",
-    			"\t#       res += 1"
+			"def mod_inverse(a, p):",
+				"\treturn pow(a, p-2, p)"
 		]
 	},
-
-	"幅優先探索": {
-		"prefix": "bfs",
+	"エラトステネスの篩": {
+		"prefix": "eratosthenes",
 		"body": [
-			"#BFS",
-			"def bfs(G, N, s, g):",
-				"\t# dist:vからの距離, queue:探索キュー",
-				"\tdist = [-1 for _ in range(N+1)]",
-				"\tqueue = deque()",
-				"\tdist[s] = 0",
-				"\tqueue.append(s)",
-				"\twhile queue:",
-					"\t\tv = queue.popleft()",
-					"\t\tfor next_v in G[v]:",
-						"\t\t\tif dist[next_v] != -1:",
-							"\t\t\t\tcontinue",
-						"\t\t\tdist[next_v] = dist[v] + 1",
-						"\t\t\tqueue.append(next_v)",
-				"\treturn dist[g]",
-		]
-	},
-
-	"深さ優先探索": {
-		"prefix": "dfs",
-		"body": [
-			"# DFS",
-			"seen = set()",
-			"def dfs(G, v):",
-				"\t# 頂点vを探索済みにする",
-				"\tseen.add(v)",
+			"# eratosthenes",
+			"def eratosthenes(N: int) -> List[int]:",
+				"\tisprime = [True] * (N+1)",
 				"",
-				"\t# 探索",
-				"\tfor next_v in G[v]:",
-					"\t\t# 探索済みならスルー",
-					"\t\tif next_v in seen:",
+				"\tisprime[0], isprime[1] = False, False",
+				"",
+				"\tfor p in range(2, N+1):",
+					"\t\tif not isprime[p]:",
 						"\t\t\tcontinue",
-					"\t\tdfs(G, next_v)",
-				"\tseen.remove(v)"
-		]
-	},
-
-	"二分探索": {
-		"prefix": "binarysearch",
-		"body": [
-			"# binary search",
-			"def binary_search(array, target):",
-    			"\t# 最大と最小の設定",
-    			"\tlow = 0",
-    			"\thigh = len(array) - 1",
-				"",
-    			"\t# 探索開始",
-    			"\t# lowとhighが一致するまで(一致した点が挿入する点)",
-    			"\twhile low <= high:",
-        		"\t# 中間点の設定",
-        			"\t\tmid = (low + high) // 2",
-        			"\t\tmid_value = array[mid]",
 					"",
-        			"\t\tif mid_value == target:",
-            			"\t\t\treturn mid",
-        			"\t\telif mid_value < target:",
-            			"\t\t\tlow = mid + 1",
-        			"\t\telse:",
-            			"\t\t\thigh = mid - 1",
-    			"\treturn -1",
+					"\t\tq = p * 2",
+					"\t\twhile q <= N:",
+						"\t\t\tisprime[q] = False",
+						"\t\t\tq += p",
+				"",
+				"\treturn [i for i, e in enumerate(isprime) if e]",
 		]
 	},
 
-	"左二分探索": {
-		"prefix": "binary_search_left",
+	// 公式
+	"ユークリッド距離": {
+		"prefix": "calc_Euclid",
 		"body": [
-			"# binary search left",
-			"def binary_search_left(array, target):",
-    			"\tlow = 0",
-    			"\thigh = len(array)-1",
-    			"\twhile low < high:",
-        			"\t\t# midの設定",
-        			"\t\tmid = (high+low)//2",
-        			"\t\t# もし中心の値より目標値が低いなら",
-        			"\t\tif array[mid] >= target:",
-            			"\t\t\t# targetは、[mid, high]",
-            			"\t\t\thigh = mid",
-        			"\t\t# もし中心の値より目標値が高いなら",
-        			"\t\telse:",
-            			"\t\t\t# targetは、[low, mid]",
-            			"\t\t\tlow = mid+1",
-    			"\treturn low",
+			"def euclidean_distance(x1: T, x2: T, y1: T, y2: T) -> T:",
+				"\treturn sqrt((x2-x1)**2 + (y2-y1)**2)"
 		]
 	},
-
-	"右二分探索": {
-		"prefix": "binary_search_right",
+	"マンハッタン距離": {
+		"prefix": "calc_Manhattan",
 		"body": [
-			"def binary_search_right(array, target):",
-				"\tlow = 0",
-				"\thigh = len(array)-1",
-				"\twhile low < high:",
-					"\t\t# midの設定",
-					"\t\tmid = (high+low)//2",
-					"\t\t# もし中心の値より目標値が低いなら",
-					"\t\tif array[mid] > target:",
-						"\t\t\t# targetは、[mid, high)",
-						"\t\t\thigh = mid",
-					"\t\t# もし中心の値より目標値が高いなら",
-					"\t\telse:",
-						"\t\t\t# targetは、[low, mid)",
-						"\t\t\tlow = mid+1",
-				"\treturn low",
+			"def manhattan_distance(x1: T, x2: T, y1: T, y2: T) -> T:",
+				"\treturn abs(x2-x1) + abs(y2-y1)"
+		]
+	},
+	"組み合わせの総数": {
+		"prefix": "calc_nCr",
+		"body": [
+			"def nums_of_combination(n: int, r: int) -> int:",
+				"\tif r == 0:",
+					"\t\treturn 1",
+				"\tover = reduce(mul, range(n, n-r, -1))",
+				"\tunder = reduce(mul, range(1, r+1))",
+				"\treturn over // under",
+		]
+	},
+	"順列の総数": {
+		"prefix": "calc_nPr",
+		"body": [
+			"def nums_of_permutation(n: int, r: int) -> int:",
+				"\tif r == 0:",
+					"\t\treturn 1",
+				"\tover = reduce(mul, range(1, n+1))",
+				"\tunder = reduce(mul, range(1, n-r+1))",
+				"\treturn over // under",
+		]
+	},
+	"等差数列の和": {
+		"prefix": "calc_sum_arithmetic",
+		"body": [
+			"def sum_of_arithmetic(begin: int, end: int, num: int) -> int:",
+				"\treturn (begin + end) // 2 * num",
+		]
+	},
+	"等比数列の和": {
+		"prefix": "calc_sum_geometric",
+		"body": [
+			"def sum_of_geometric(a: int, r: int, n: int) -> int:",
+				"\tover = a * (pow(r, n) - 1)",
+				"\tunder = r - 1",
+				"\treturn over // under",
 		]
 	},
 
+	// 累積和
+	"一次元累積和": {
+		"prefix": "cumsum",
+		"body": [
+			"cumsum = [0] + list(accumulate(A))",
+		]
+	},
+	"二次元累積和": {
+		"prefix": "cumsum2d",
+		"body": [
+			"def cumsum2d(n:int, a:List[T]) -> List[T]:",
+				"\ttmp = [[0] * (n+1) for _ in range(n+1)]",
+				"\tfor i in range(n):",
+					"\t\tfor j in range(n):",
+						"\t\t\ttmp[i+1][j+1] = (",
+							"\t\t\t\ttmp[i+1][j]",
+							"\t\t\t\t+ tmp[i][j+1]",
+							"\t\t\t\t- tmp[i][j]",
+							"\t\t\t\t+ a[i][j]",
+							"\t\t\t\t)",
+				"\treturn tmp",
+		]
+	},
 	"三次元累積和": {
 		"prefix": "cumsum3d",
 		"body": [
-			"def cumsum3d(n:int, a:list):",
+			"def cumsum3d(n:int, a:list) -> List[T]:",
 				"\ttmp = [[[0] * (n + 1) for _ in range(n + 1)] for _ in range(n + 1)]",
 				"\tfor i in range(n):",
 					"\t\tfor j in range(n):",
@@ -307,23 +282,7 @@
 		]
 	},
 
-	"二次元累積和": {
-		"prefix": "cumsum2d",
-		"body": [
-			"def cumsum2d(n:int, a:list):",
-				"\ttmp = [[0] * (n+1) for _ in range(n+1)]",
-				"\tfor i in range(n):",
-					"\t\tfor j in range(n):",
-						"\t\t\ttmp[i+1][j+1] = (",
-							"\t\t\t\ttmp[i+1][j]",
-							"\t\t\t\t+ tmp[i][j+1]",
-							"\t\t\t\t- tmp[i][j]",
-							"\t\t\t\t+ a[i][j]",
-							"\t\t\t\t)",
-				"\treturn tmp",
-		]
-	},
-
+	// データ構造
 	"Union Find": {
 		"prefix": "unionfind",
 		"body": [
@@ -334,18 +293,18 @@
 				"\t# https://note.nkmk.me/python-union-find/",
 				"\t#",
 				"\t###",
-				"\tdef __init__(self, n):",
+				"\tdef __init__(self, n: int) -> None:",
 					"\t\tself.n = n",
 					"\t\tself.parents = [-1] * n",
 				"\t# 要素xが属するグループの根を返す",
-				"\tdef find(self, x):",
+				"\tdef find(self, x: int) -> int:",
 					"\t\tif self.parents[x] < 0:",
 						"\t\t\treturn x",
 					"\t\telse:",
 						"\t\t\tself.parents[x] = self.find(self.parents[x])",
 						"\t\t\treturn self.parents[x]",
 				"\t# 要素xが属するグループと要素yが属するグループを併合する",
-				"\tdef union(self, x, y):",
+				"\tdef union(self, x: int, y: int) -> None:",
 					"\t\tx = self.find(x)",
 					"\t\ty = self.find(y)",
 					"\t\tif x == y:",
@@ -355,38 +314,35 @@
 					"\t\tself.parents[x] += self.parents[y]",
 					"\t\tself.parents[y] = x",
 				"\t# 要素xが属するグループのサイズを返す",
-				"\tdef size(self, x):",
+				"\tdef size(self, x: int) -> int:",
 					"\t\treturn -self.parents[self.find(x)]",
 				"\t# 要素xと要素yが同じグループに属するかを返す",
-				"\tdef same(self, x, y):",
+				"\tdef same(self, x: int, y: int) -> bool:",
 					"\t\treturn self.find(x) == self.find(y)",
 				"\t# 要素xが属するグループに属する要素をリストで返す",
-				"\tdef members(self, x):",
+				"\tdef members(self, x: int) -> List[int]:",
 					"\t\troot = self.find(x)",
 					"\t\treturn [i for i in range(self.n) if self.find(i) == root]",
 				"\t# 根のリストを返す",
-				"\tdef roots(self):",
+				"\tdef roots(self) -> List[int]:",
 					"\t\treturn [i for i, x in enumerate(self.parents) if x < 0]",
 				"\t# グループの数を返す",
-				"\tdef group_count(self):",
+				"\tdef group_count(self) -> int:",
 					"\t\treturn len(self.roots())",
 				"\t# {根:[そのグループに含まれる要素のリスト], ...}のdefaultdictを返す",
-				"\tdef all_group_members(self):",
+				"\tdef all_group_members(self) -> Dict[int, List[int]]:",
 					"\t\tgroup_members = defaultdict(list)",
 					"\t\tfor member in range(self.n):",
 						"\t\t\tgroup_members[self.find(member)].append(member)",
 					"\t\treturn group_members",
-				"\tdef __str__(self):",
+				"\tdef __str__(self) -> str:",
 					"\t\treturn '\\n'.join(f'{r}: {m}' for r, m in self.all_group_members().items())"
 		]
 	},
-
 	"Sortedset": {
 		"prefix": "SortedSet",
 		"body": [
 			"import math",
-			"from typing import Generic, Iterable, Iterator, List, Tuple, TypeVar, Optional",
-			"T = TypeVar('T')",
 			"",
 			"class SortedSet(Generic[T]):",
 			"\t#",
@@ -538,13 +494,10 @@
 			"\t\treturn ans",
 		]
 	},
-
 	"SortedMultiset": {
 		"prefix": "SortedMultiSet",
 		"body": [
 			"import math",
-			"from typing import Generic, Iterable, Iterator, List, Tuple, TypeVar, Optional",
-			"T = TypeVar('T')",
 			"",
 			"class SortedMultiset(Generic[T]):",
 			"\t#",
@@ -692,15 +645,59 @@
 			"\t\treturn ans",
 		]
 	},
-
-	
-	"grid移動": {
-		"prefix": "grid_move",
-		"body": [
-			"move = {'U':[-1, 0], 'D':[1, 0], 'L':[0, -1], 'R':[0, 1]}"
-	]
+	"SegmentTree":{
+		"prefix": "SegmentTree",
+		"body": ["class SegmentTree:",
+					"\tdef __init__(self, iter: Iterator, func: Callable[..., int], ele: Any) -> None:",
+						"\t\t\"\"\"",
+						"\t\titer: Iterator(初期化対象)",
+						"\t\tfunc: 評価関数",
+						"\t\tele: 単位元(モノイドの単位元)",
+						"\t\t\"\"\"",
+						"\t\tN = len(iter)",
+						"\t\tself.func = func",
+						"\t\tself.ele = ele",
+						"\t\tself.length = 1 << (N - 1).bit_length()",
+						"\t\tself.tree = [ele] * 2*self.length",
+						"",
+						"\t\tfor i in range(N):",
+							"\t\t\tself.tree[self.length + i] = iter[i]",
+						"\t\tfor i in range(self.length-1, 0, -1):",
+							"\t\t\tself.tree[i] = self.func(self.tree[2*i], self.tree[2*i + 1])",
+						"",
+					"\tdef update(self, index: int, value: Any) -> None:",
+						"\t\t\"\"\"",
+						"\t\tindex: 更新対象",
+						"\t\tvalue: 更新値",
+						"\t\t\"\"\"",
+						"\t\tindex += self.length",
+						"\t\tself.tree[index] = value",
+						"\t\twhile index > 1:",
+							"\t\t\tself.tree[index >> 1] = self.func(self.tree[index], self.tree[index ^ 1])",
+							"\t\t\tindex >>= 1",
+						"",
+					"\tdef get(self, l, r):",
+						"\t\t\"\"\"",
+						"\t\t[l, r)の区間の値に関して",
+						"\t\tself.funcで評価を行いO(logN)で返す",
+						"\t\t\"\"\"",
+						"\t\tres = self.ele",
+						"",
+						"\t\tl += self.length",
+						"\t\tr += self.length",
+						"\t\twhile l < r:",
+							"\t\t\tif l & 1:",
+								"\t\t\t\tres = self.func(res, self.tree[l])",
+								"\t\t\t\tl += 1",
+							"\t\t\tif r & 1:",
+								"\t\t\t\tres = self.func(res, self.tree[r - 1])",
+							"\t\t\tl >>= 1",
+							"\t\t\tr >>= 1",
+        				"\t\treturn res",
+				]
 	},
 
+	// 探索
 	"ダイクストラ法": {
 		"prefix": "dijkstra",
 		"body": [
@@ -726,12 +723,154 @@
 			"\treturn distances",
 		]
 	},
-
-	"フェルマーの小定理を使った逆元": {
-		"prefix": "modinv",
+	"幅優先探索": {
+		"prefix": "bfs",
 		"body": [
-			"def mod_inverse(a, p):",
-				"\treturn pow(a, p-2, p)"
+			"#BFS",
+			"def bfs(G, N, s, g):",
+				"\t# dist:vからの距離, queue:探索キュー",
+				"\tdist = [-1 for _ in range(N+1)]",
+				"\tqueue = deque()",
+				"\tdist[s] = 0",
+				"\tqueue.append(s)",
+				"\twhile queue:",
+					"\t\tv = queue.popleft()",
+					"\t\tfor next_v in G[v]:",
+						"\t\t\tif dist[next_v] != -1:",
+							"\t\t\t\tcontinue",
+						"\t\t\tdist[next_v] = dist[v] + 1",
+						"\t\t\tqueue.append(next_v)",
+				"\treturn dist[g]",
+		]
+	},
+	"深さ優先探索": {
+		"prefix": "dfs",
+		"body": [
+			"# DFS",
+			"seen = set()",
+			"def dfs(G, v):",
+				"\t# 頂点vを探索済みにする",
+				"\tseen.add(v)",
+				"",
+				"\t# 探索",
+				"\tfor next_v in G[v]:",
+					"\t\t# 探索済みならスルー",
+					"\t\tif next_v in seen:",
+						"\t\t\tcontinue",
+					"\t\tdfs(G, next_v)",
+				"\tseen.remove(v)"
+		]
+	},
+	"二分探索": {
+		"prefix": "binarysearch",
+		"body": [
+			"# binary search",
+			"def binary_search(array, target):",
+    			"\t# 最大と最小の設定",
+    			"\tlow = 0",
+    			"\thigh = len(array) - 1",
+				"",
+    			"\t# 探索開始",
+    			"\t# lowとhighが一致するまで(一致した点が挿入する点)",
+    			"\twhile low <= high:",
+        		"\t# 中間点の設定",
+        			"\t\tmid = (low + high) // 2",
+        			"\t\tmid_value = array[mid]",
+					"",
+        			"\t\tif mid_value == target:",
+            			"\t\t\treturn mid",
+        			"\t\telif mid_value < target:",
+            			"\t\t\tlow = mid + 1",
+        			"\t\telse:",
+            			"\t\t\thigh = mid - 1",
+    			"\treturn -1",
+		]
+	},
+	"左二分探索": {
+		"prefix": "binary_search_left",
+		"body": [
+			"# binary search left",
+			"def binary_search_left(array, target):",
+    			"\tlow = 0",
+    			"\thigh = len(array)-1",
+    			"\twhile low < high:",
+        			"\t\t# midの設定",
+        			"\t\tmid = (high+low)//2",
+        			"\t\t# もし中心の値より目標値が低いなら",
+        			"\t\tif array[mid] >= target:",
+            			"\t\t\t# targetは、[mid, high]",
+            			"\t\t\thigh = mid",
+        			"\t\t# もし中心の値より目標値が高いなら",
+        			"\t\telse:",
+            			"\t\t\t# targetは、[low, mid]",
+            			"\t\t\tlow = mid+1",
+    			"\treturn low",
+		]
+	},
+	"右二分探索": {
+		"prefix": "binary_search_right",
+		"body": [
+			"def binary_search_right(array, target):",
+				"\tlow = 0",
+				"\thigh = len(array)-1",
+				"\twhile low < high:",
+					"\t\t# midの設定",
+					"\t\tmid = (high+low)//2",
+					"\t\t# もし中心の値より目標値が低いなら",
+					"\t\tif array[mid] > target:",
+						"\t\t\t# targetは、[mid, high)",
+						"\t\t\thigh = mid",
+					"\t\t# もし中心の値より目標値が高いなら",
+					"\t\telse:",
+						"\t\t\t# targetは、[low, mid)",
+						"\t\t\tlow = mid+1",
+				"\treturn low",
+		]
+	},
+	"bit全探索": {
+		"prefix": "bitsearch",
+		"body": [
+			"#bit_search",
+			"res = 0",
+			"for bit in range(2**N):",
+    			"\t#ここで判定用の変数を初期化する",
+    			"\t#ex) total = 0",
+    			"\tfor i in range(N):",
+        			"\t\tif (bit >> i) & 1:",
+            			"\t\t\t#ここで何か操作を入れる",
+            			"\t\t\t#total += list[i]",
+    			"\t#組み合わせに関して、要素を満たすか判定する",
+    			"\t#ex) if total == target:",
+    			"\t#       res += 1"
+		]
+	},
+	// other
+	"4方向grid移動": {
+		"prefix": "grid_move4",
+		"body": [
+			"# 文字列の指定がないときはmove2dを消す",
+			"move2d = {'U':0, 'D':1, 'L':2, 'R':3}",
+			"d = [[-1, 0], [1, 0], [0, -1], [0, 1]]",
+	]
+	},
+	"8方向grid移動": {
+		"prefix": "grid_move8",
+		"body": [
+			"dxs = [-1, 0, 1, 1, 1, 0, -1, -1]",
+			"dys = [0, 1, 1, 1, 0, -1, -1, -1]",
+			"for i in range(8):",
+				"\tdx, dy = dxs[i], dys[i]"
+	]
+	},
+	"[MIN, MAX)の範囲内かを調べる": {
+		"prefix": "is_out_of_range",
+		"body": [
+			"def is_out_of_range(x:int, y:int, Xmi:int, Xma:int, Ymi:int, Yma:int) -> bool:",
+				"\tif Xmi <= x < Xma and Ymi <= y < Yma:",
+					"\t\treturn False",
+				"\telse:",
+					"\t\treturn True",
+			"$1"
 		]
 	},
 }

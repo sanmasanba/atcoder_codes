@@ -10,40 +10,31 @@ INF = float('inf')
 
 #main
 def main():
+    # input
     N, K = map(int, input().split(' '))
     A = list(map(int, input().split(' ')))
-    A_set = set(A)
+    
+    # 前からと後ろからの奇妙さを計算しておく
+    # pre[0]:=(2-1)
+    # pre[1]:=(4-3)+(2-1) 
+    pre = [0] * (K+1)
+    # suf[0]:=(K-(K-1))
+    # suf[0]:=((K-2)-(K-3))+(K-(K-1))
+    suf = [0] * (K+1)
+    for i in range(1, K+1):
+        pre[i] = pre[i-1]
+        if i%2 == 0:
+            pre[i] += A[i-1] - A[i-2]
+    for i in range(K-1, -1, -1):
+        suf[i] = suf[i+1]
+        if (K-i)%2 == 0:
+            suf[i] += A[i+1] - A[i]
 
-    stack = [A[0]]
-    not_use = -1
-    if K%2:
-        if K == 1:
-            not_use = A[0]
-        else:
-            for i in range(1, K):
-                if A[i-1]+1 == A[i]:
-                    stack.append(A[i])
-                else:
-                    if len(stack)%2:
-                        not_use = stack.pop()
-                        break
-                    stack = [A[i]]
-        if not_use == -1 and len(stack)%2:
-            not_use = stack[-1]
+    res = INF
+    for i in range(0, K+1, 2):
+        res = min(res, pre[i]+suf[i])
 
-    socks = []
-    for n in range(N):
-        if n+1 == not_use:
-            continue
-        if n+1 in A_set:
-            socks.append(n+1)
-        else:
-            socks.append(n+1)
-            socks.append(n+1)
-
-    res = 0
-    for i in range((2*N-K)//2):
-        res += abs(socks[2*i] - socks[2*i+1])
+    # output
     print(res)
 
 if __name__ == '__main__':
