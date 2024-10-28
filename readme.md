@@ -1,8 +1,8 @@
 競技プログラミングの勉強やコンテストに参加したときのコードや、ライブラリ、アルゴリズムなどに関してまとめています。
 
-# 現在のAC状況(2024-10-16 00:46:53 更新)
-> atcoder&nbsp;:&emsp;00542  
-> AOJ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&emsp;00016  
+# 現在のAC状況(2024-10-28 23:27:38 更新)
+> atcoder&nbsp;:&emsp;00588  
+> AOJ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&emsp;00017  
 
 
 # ディレクトリ構成
