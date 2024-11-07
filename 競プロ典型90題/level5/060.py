@@ -14,31 +14,34 @@ T = TypeVar('T')
 sys.setrecursionlimit(10**6)
 INF = float('inf')
 
+def LIS(A: List[int]):
+    N = len(A)
+    dp = [A[0]]
+    res = [0] * N
+    for i in range(N):
+        if A[i] > dp[-1]:
+            dp.append(A[i])
+            res[i] = len(dp)
+        else:
+            pos = bisect_left(dp, A[i])
+            dp[pos] = A[i]
+            res[i] = pos + 1
+    return res
+
 #main
 def main():
     # intput
     N = int(input())
-    dots = [tuple(map(int, input().split())) for _ in range(N)]
-    dots_split = defaultdict(set)
-
-    for x, y in dots:
-        dots_split[x].add(y)
-
-    dots_x_split = []
-    for x, v in dots_split.items():
-        if 1 < len(v):
-            dots_x_split.append(v)
+    A = list(map(int, input().split(' ')))
     
-    if len(dots_x_split) < 2:
-        print(0)
-        return
-    
+    from_left = LIS(A)
+    A = list(reversed(A))
+    from_right = LIS(A)
+    from_right = list(reversed(from_right))
+
     res = 0
-    for pp1, pp2 in combinations(dots_x_split, 2):
-        for p1, p2 in combinations(pp1, 2):
-            if p1 in pp2 and p2 in pp2:
-                res += 1
-
+    for i in range(N):
+        res = max(res, from_left[i] + from_right[i] - 1)
     print(res)
 
 if __name__ == '__main__':

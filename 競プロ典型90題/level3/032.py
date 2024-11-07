@@ -18,26 +18,30 @@ INF = float('inf')
 def main():
     # intput
     N = int(input())
-    X, Y = map(int, input().split(' '))
-    A, B = map(list, zip(*[list(map(int, input().split(' '))) for _ in range(N)]))
-    
-    # 
-    dp = [[[INF] * 301 for _ in range(301)] for _ in range(N+1)]
-    dp[0][0][0] = 0
-    for i in range(N):
-        for a in range(301):
-            for b in range(301):
-                dp[i+1][a][b] = min(dp[i][a][b], dp[i+1][a][b])
-                na, nb = min(300, a+A[i]), min(300, b+B[i])
-                dp[i+1][na][nb] = min(dp[i][a][b]+1, dp[i+1][na][nb])
+    As = []
+    for _ in range(N):
+        As.append(list(map(int, input().split((' ')))))
+    M = int(input())
+    XY = set()
+    for _ in range(M): 
+        XY.add(tuple(map(lambda x: int(x)-1, input().split(' '))))
 
     res = INF
-    for x in range(X, 301):
-        for y in range(Y, 301):
-            res = min(res, dp[N][x][y])
-
+    for perm in permutations(range(N)):
+        run_time = 0
+        for i, p in enumerate(perm):
+            run_time += As[p][i]
+        can_goal = True
+        for i in range(N-1):
+            pair1 = (perm[i], perm[i+1])
+            pair2 = (perm[i+1], perm[i])
+            if pair1 in XY or pair2 in XY:
+                can_goal = False
+        if can_goal:
+            res = min(res, run_time)
+    
+    # output
     print(-1 if res == INF else res)
-
 
 if __name__ == '__main__':
     main()

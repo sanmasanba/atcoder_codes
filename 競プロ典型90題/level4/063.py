@@ -17,27 +17,22 @@ INF = float('inf')
 #main
 def main():
     # intput
-    N = int(input())
-    dots = [tuple(map(int, input().split())) for _ in range(N)]
-    dots_split = defaultdict(set)
+    H, W = map(int, input().split(' '))
+    P = [list(map(int, input().split(' '))) for _ in range(H)]
 
-    for x, y in dots:
-        dots_split[x].add(y)
-
-    dots_x_split = []
-    for x, v in dots_split.items():
-        if 1 < len(v):
-            dots_x_split.append(v)
-    
-    if len(dots_x_split) < 2:
-        print(0)
-        return
-    
     res = 0
-    for pp1, pp2 in combinations(dots_x_split, 2):
-        for p1, p2 in combinations(pp1, 2):
-            if p1 in pp2 and p2 in pp2:
-                res += 1
+    for bit in range(2**H):
+        parm_matrix = []
+        d = defaultdict(int)
+        for mask in range(H):
+            if bit >> mask & 1:
+                parm_matrix.append(P[mask])
+        rows = len(parm_matrix)
+        for row in zip(*parm_matrix):
+            if all(map(lambda x: row[0] == x, row)):
+                d[row[0]] += rows
+        for _, value in d.items():
+            res = max(res, value)
 
     print(res)
 

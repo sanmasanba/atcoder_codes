@@ -13,7 +13,6 @@ T = TypeVar('T')
 
 sys.setrecursionlimit(10**6)
 INF = float('inf')
-MOD = 10**9 + 7
 
 class UnionFind():
     ###
@@ -70,39 +69,43 @@ class UnionFind():
 #main
 def main():
     # intput
-    N, M = map(int, input().split(' '))
+    N = int(input())
+    Q = int(input())
+    Asum = [None] * N
+    query = []
     uf = UnionFind(N)
-    G = [[] for _ in range(N)]
-    for _ in range(M):
-        a, b = map(lambda x: int(x)-1, input().split(' '))
-        G[a].append(b)
-        G[b].append(a)
-        uf.union(a, b)
-    
-    if not uf.same(0, N-1):
-        print(0)
-        return
-    
-    dist = [-1] * N
-    root = [0] * N
-    dist[0] = 0
-    root[0] = 1
-    que = deque()
-    que.append(0)
-    while que:
-        v = que.popleft()
-        for nv in G[v]:
-            if dist[nv] != -1:
-                if dist[nv] == dist[v] + 1:
-                    root[nv] += root[v]
-                    root[nv] %= MOD
-                continue
-            dist[nv] = dist[v] + 1
-            root[nv] += root[v]
-            root[nv] %= MOD
-            que.append(nv)
+    for i in range(Q):
+        t, x, y, v = map(lambda x:int(x)-1, input().split(' '))
+        match t+1:
+            case 0:
+                uf.union(x, y)
+                Asum[x] = v+1
+            case 1:
+                if uf.same(x, y):
+                    query.append((x, y, v+1))
+                else:
+                    query.append((-1, -1, "Ambiguous"))
 
-    print(root[N-1])       
+    A = [-1] * N
+    A[0] = 0
+    for i in range(N-1):
+        if Asum[i] is not None:
+            if A[i] == -1:
+                A[i] = 0    
+            A[i+1] = Asum[i] - A[i]
+    
+    res = []
+    for x, y, v in query:
+        if x == -1 and y == -1:
+            res.append(v)
+        else:
+            d = v - A[x]
+            if abs(x-y)%2:
+                res.append(A[y]-d)
+            else:
+                res.append(A[y]+d)
+
+    print(*res, sep='\n')
 
 if __name__ == '__main__':
     main()

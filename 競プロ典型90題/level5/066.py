@@ -18,28 +18,25 @@ INF = float('inf')
 def main():
     # intput
     N = int(input())
-    dots = [tuple(map(int, input().split())) for _ in range(N)]
-    dots_split = defaultdict(set)
+    L, R = map(list, zip(*[list(map(int, input().split(' '))) for _ in range(N)]))
 
-    for x, y in dots:
-        dots_split[x].add(y)
-
-    dots_x_split = []
-    for x, v in dots_split.items():
-        if 1 < len(v):
-            dots_x_split.append(v)
-    
-    if len(dots_x_split) < 2:
-        print(0)
-        return
-    
     res = 0
-    for pp1, pp2 in combinations(dots_x_split, 2):
-        for p1, p2 in combinations(pp1, 2):
-            if p1 in pp2 and p2 in pp2:
-                res += 1
+    for idx in combinations(range(N), 2):
+        id1, id2 = idx
+        if id1 > id2:
+            id1, id2 = id2, id1
+        l1, r1 = L[id1], R[id1]
+        l2, r2 = L[id2], R[id2]
+        over = 0
+        chil = 0
+        for i in range(l1, r1+1):
+            for j in range(l2, r2+1):
+                over += 1
+                if i > j:
+                    chil += 1
+        res += (chil*10**7)/over
 
-    print(res)
+    print(res/(10**7))
 
 if __name__ == '__main__':
     main()

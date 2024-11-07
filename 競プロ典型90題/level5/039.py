@@ -13,32 +13,37 @@ T = TypeVar('T')
 
 sys.setrecursionlimit(10**6)
 INF = float('inf')
+def dfs(pre, pos, G, dp):
+    # 通過したら記録
+    dp[pos] += 1
+    for nxt in G[pos]:
+        if pre != nxt:
+            dfs(pos, nxt, G, dp)
+            # 下のノードの個数を数える
+            dp[pos] += dp[nxt]
 
 #main
 def main():
     # intput
     N = int(input())
-    dots = [tuple(map(int, input().split())) for _ in range(N)]
-    dots_split = defaultdict(set)
+    G = [[] for _ in range(N)]
+    edges = []
+    for _ in range(N-1):
+        a, b = map(lambda x: int(x)-1, input().split(' '))
+        G[a].append(b)
+        G[b].append(a)
+        edges.append([a, b])
 
-    for x, y in dots:
-        dots_split[x].add(y)
+    dp = [0] * N
+    # ノードの通過回数を求める
+    dfs(-1, 0, G, dp)
 
-    dots_x_split = []
-    for x, v in dots_split.items():
-        if 1 < len(v):
-            dots_x_split.append(v)
-    
-    if len(dots_x_split) < 2:
-        print(0)
-        return
-    
     res = 0
-    for pp1, pp2 in combinations(dots_x_split, 2):
-        for p1, p2 in combinations(pp1, 2):
-            if p1 in pp2 and p2 in pp2:
-                res += 1
-
+    for a, b in edges:
+        r = min(dp[a], dp[b])
+        res += r * (N-r)
+    
+    print(dp)
     print(res)
 
 if __name__ == '__main__':

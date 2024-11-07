@@ -17,29 +17,24 @@ INF = float('inf')
 #main
 def main():
     # intput
-    N = int(input())
-    dots = [tuple(map(int, input().split())) for _ in range(N)]
-    dots_split = defaultdict(set)
-
-    for x, y in dots:
-        dots_split[x].add(y)
-
-    dots_x_split = []
-    for x, v in dots_split.items():
-        if 1 < len(v):
-            dots_x_split.append(v)
+    K = int(input())
     
-    if len(dots_x_split) < 2:
+    if K%9 != 0:
         print(0)
         return
     
-    res = 0
-    for pp1, pp2 in combinations(dots_x_split, 2):
-        for p1, p2 in combinations(pp1, 2):
-            if p1 in pp2 and p2 in pp2:
-                res += 1
+    dp = [0] * 100010
+    dp[0] = 1
 
-    print(res)
+    # 桁ごとの総和をiとする
+    for i in range(1, K+1):
+        # 先頭の数の最大値を指定する
+        top_seq = min(i, 9)
+        # 先頭の数がjだった時、桁和がKとなるのは先頭桁以外の桁和がK-jとなるとき
+        for j in range(1, top_seq+1):
+            dp[i] = (dp[i] + dp[i - j]) % (10**9+7)
+
+    print(dp[K]) 
 
 if __name__ == '__main__':
     main()
