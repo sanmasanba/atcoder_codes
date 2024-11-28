@@ -1,8 +1,11 @@
 testcases/
 tools/
 Cargo.lock
+Cargo.toml
+out.svg
 .vscode/
 eval.py
 setup.py
 rust-toolchain
 vis.html
+src
