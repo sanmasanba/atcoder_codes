@@ -23,6 +23,7 @@ atcoder_codes/
 - ダイクストラ法の解説
 - ワーシャルフロイド法の解説
 - 二分グラフの解説
+- TrieTreeを覚える
 
 # 参考にしているサイト・よく使うサイト
 - [AtCoder.jp](https://atcoder.jp/home)
