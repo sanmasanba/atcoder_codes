@@ -82,7 +82,7 @@
 	"simple_graph": {
 		"prefix": "input_simpleG",
 		"body": [
-			"N, M = map(int, input().split(' '))",
+			"N, M = map(lambda x: int(x)-1, input().split(' '))",
 			"G = [[] for _ in range(N)]",
 			"for _ in range(M):",
 				"\ta, b = map(int, input().split(' '))",
@@ -95,7 +95,7 @@
 	"weighted_graph": {
 		"prefix": "input_weightedG",
 		"body": [
-			"N, M = map(int, input().split(' '))",
+			"N, M = map(lambda x: int(x)-1, input().split(' '))",
 			"G = defaultdict(list)",
 			"for _ in range(M):",
 				"\ts, g, weight = map(int, input().split(' '))",
@@ -1143,7 +1143,7 @@
 	"8方向grid移動": {
 		"prefix": "grid_move8",
 		"body": [
-			"dxs = [-1, 0, 1, 1, 1, 0, -1, -1]",
+			"dxs = [1, 1, 0, -1, -1, -1, 0, 1]",
 			"dys = [0, 1, 1, 1, 0, -1, -1, -1]",
 			"for i in range(8):",
 				"\tdx, dy = dxs[i], dys[i]"

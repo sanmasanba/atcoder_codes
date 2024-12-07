@@ -17,30 +17,21 @@ INF = float('inf')
 #main
 def main():
     # intput
-    N = int(input())
-    A = [list(input()) for _ in range(N)]
+    S = list(input())
+    Q = int(input())
+    K = list(map(lambda x: int(x)-1, input().split(' ')))
+    N = len(S)
 
-    MAP = []
-    for _ in range(3):
-        for a in A:
-            MAP.append(a + a + a)
+    for k in K:
+        # 何ブロック目かと何文字目か
+        blk = k//N
+        pt = k%N
 
-    dxs = [1, 1, 0, -1, -1, -1, 0, 1]
-    dys = [0, 1, 1, 1, 0, -1, -1, -1]
-
-    res = []
-    for i in range(N, 2*N):
-        for j in range(N, 2*N):
-            for k in range(8):
-                s = ""
-                dx, dy = dxs[k], dys[k]
-                for l in range(N):
-                    x, y = i+dx*l, j+dy*l
-                    s += MAP[x][y]
-                res.append(int(s))
-    res.sort()
-
-    print(res[-1])
+        # blkのpopcountが奇数なら反転
+        if blk.bit_count()%2:
+            print(S[pt].swapcase(), end=' ')
+        else:
+            print(S[pt], end=' ')
 
 if __name__ == '__main__':
     main()
