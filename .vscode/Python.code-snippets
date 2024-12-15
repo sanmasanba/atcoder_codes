@@ -33,7 +33,7 @@
 	"複数回の(A, B)を別々に保存": {
 		"prefix": "inputAB",
 		"body": [
-			"A, B = map(list, zip(*[list(map(int, input().split(' '))) for _ in range(N)]))",
+			"A, B = zip(*[list(map(int, input().split(' '))) for _ in range(N)])",
 			"$1"
 		]
 	},
