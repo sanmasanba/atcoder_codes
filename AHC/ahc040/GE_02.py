@@ -1,6 +1,7 @@
 import random
 import numpy as np
 import time
+import math
 
 # 初期設定
 rng = random.Random(42)
@@ -61,23 +62,28 @@ def query(prdb):
     # 計測値を受け取る
     W, H = map(int, input().split())
 
-def generater():
-    prdb = []
-    for i in range(N):
-        prdb.append((
-        i,
-        rng.randint(0, 1),
-        ['U', 'L'][rng.randint(0, 1)],
-        rng.randint(-1, i - 1),
-        ))
-    return prdb
+def generater(est_wh):
+    target_W = math.sqrt(sum(w*h for w, h in est_wh))
+    res = []
+    crr_w = 0
+    crr_target = -1
+    for i, wh in enumerate(est_wh):
+        w, _ = wh
+        if crr_w + w <= target_W:
+            res.append((i, rng.randint(0, 1), 'L', crr_target))
+            crr_w += w
+        else:
+            res.append((i, rng.randint(0, 1), 'U', -1))
+            crr_target = i
+            crr_w = w
+    return res
 
 def genetic_algorithm(est_wh):
     population_size =  30     
     mutation_rate = 0.1
 
     # 初期集団の生成
-    population = [generater() for _ in range(population_size)]
+    population = [generater(est_wh) for _ in range(population_size)]
     generation = 0
     while time.process_time() - s_time < 2.0:
         # 適応度の評価
@@ -128,7 +134,7 @@ def main():
 
     # ブロックの大きさを推定する
     key_wh = [(i, k) for i, k in enumerate(wh)]
-    key_wh.sort(reverse=True, key=lambda x: max(x[1]))
+    key_wh.sort(key=lambda x: max(x[1]))
     estimate_blocks = [[a] for a in wh]
     def estimate(i):
         i %= len(key_wh)
