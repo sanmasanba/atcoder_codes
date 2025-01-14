@@ -1,7 +1,7 @@
 競技プログラミングの勉強やコンテストに参加したときのコードや、ライブラリ、アルゴリズムなどに関してまとめています。
 
-# 現在のAC状況(2025-01-06 21:43:02 更新)
-> atcoder&nbsp;:&emsp;00724  
+# 現在のAC状況(2025-01-15 00:31:57 更新)
+> atcoder&nbsp;:&emsp;00739  
 > AOJ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&emsp;00017  
 
 
@@ -10,8 +10,10 @@
 atcoder_codes/ 
    ├──.vscode/  
    ├──ABC/     
-   ├──AHC/
    ├──ARC/
+   ├──AGC/
+   ├──AHC/
+   ├──OTHER/
    ├──EDPC/
    ├──精選100問/   
    ├──競プロ典型90題/
