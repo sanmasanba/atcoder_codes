@@ -24,9 +24,22 @@ MOD1000000007 = 1000000007
 def main():
     # intput
     N, K = map(int, input().split())
-    A, B = zip(*[list(map(int, input().split())) for _ in range(N)])
+    MAP = [[0 for _ in range(5001)] for _ in range(5001)]
+    for _ in range(N):
+        Ai, Bi = map(int, input().split())
+        MAP[Ai][Bi] += 1
     
-    
+    for i in range(5000):
+        tmp = 0
+        for j in range(5000):
+            MAP[i][j] += tmp
+            tmp = MAP[i][j]  
+    for j in range(5000):
+        tmp = 0
+        for i in range(5000):
+            MAP[i][j] += tmp
+            tmp = MAP[i][j]
+
 
 if __name__ == '__main__':
     main()
