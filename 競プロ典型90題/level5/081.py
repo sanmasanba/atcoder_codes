@@ -23,6 +23,9 @@ MOD1000000007 = 1000000007
 #main
 def main():
     # intput
+    N, K = map(int, input().split())
+    A, B = zip(*[list(map(int, input().split())) for _ in range(N)])
+    
     
 
 if __name__ == '__main__':
