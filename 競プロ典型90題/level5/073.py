@@ -15,53 +15,43 @@ sys.setrecursionlimit(10**6)
 INF = float('inf')
 MOD = 10**9+7
 
-# DFS
-def dfs(v, pv):
-    dp[v][2] = 1
-    if C[v] == 'a':
-        dp[v][0] = 1
-    else:
-        dp[v][1] = 1
-    
-    for nv in G[v]:
-        if nv == pv:
-            continue
-        dfs(nv, v)
-
-        # もしv='a'なら、そこから延びる枝はa,b両方を持っているか、aしか含まない
-        # 枝がaのみ枝になる
-        dp[v][0] *= dp[nv][0] + dp[nv][2]
-        dp[v][0] %= MOD
-        # もしv='b'なら、そこから延びる枝はa,b両方を持っているか、bしか含まない
-        # 枝がbのみ枝になる
-        dp[v][1] *= dp[nv][1] + dp[nv][2]
-        dp[v][1] %= MOD
-        # 
-        # 
-        dp[v][2] *= sum(dp[nv]) + dp[nv][2]
-        dp[v][2] %= MOD
-
-    dp[v][2] -= dp[v][0] + dp[v][1]
-    dp[v][2] %= MOD
-
 #main
 def main():
     # intput
     N = int(input())
-    global C
     C = list(input().split(' ')) 
-    global G
     G = [[] for _ in range(N)]
     for _ in range(N-1):
         a, b = map(int, input().split(' '))
         G[a-1].append(b-1)
         G[b-1].append(a-1)
 
-    # dp[pos][状態] := 可能な数
-    global dp
+    # dp[pos][状態] := 可能な数(0: aのみ,1: bのみ,2: aとb)
     dp = [[0]*3 for _ in range(N)]
 
-    dfs(0, -1)
+    # DFS
+    def dfs(v, pv=-1):
+        either, both = 1, 1
+        if C[v] == 'a': 
+            c = 0  
+        else: 
+            c = 1
+        
+        for nv in G[v]:
+            if nv == pv:
+                continue
+            dfs(nv, v)
+            # either := 自身と同じ文字しかない部分木 + abの両方を含む部分木
+            # both := aのみの部分木 + bのみの部分木 + abを含む部分木(つないでもつながなくても)
+            either *= (dp[nv][c] + dp[nv][2])
+            both *= (dp[nv][0] + dp[nv][1] + 2*dp[nv][2])
+            either %= MOD
+            both %= MOD
+
+        dp[v][c] = either
+        dp[v][2] = (both - either + MOD) % MOD
+
+    dfs(0)
     print(dp[0][2])
 
 if __name__ == '__main__':

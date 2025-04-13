@@ -24,22 +24,32 @@ MOD1000000007 = 1000000007
 def main():
     # intput
     N, K = map(int, input().split())
-    MAP = [[0 for _ in range(5001)] for _ in range(5001)]
+    MAP = [[0 for _ in range(5010)] for _ in range(5010)]
+    R, C = K, K
     for _ in range(N):
         Ai, Bi = map(int, input().split())
-        MAP[Ai][Bi] += 1
-    
-    for i in range(5000):
-        tmp = 0
-        for j in range(5000):
-            MAP[i][j] += tmp
-            tmp = MAP[i][j]  
-    for j in range(5000):
-        tmp = 0
-        for i in range(5000):
-            MAP[i][j] += tmp
-            tmp = MAP[i][j]
+        MAP[Ai+1][Bi+1] += 1
+        R = max(R, Ai)
+        C = max(C, Bi)
+    R, C = R+1, C+1
 
+    for i in range(1, R+1):
+        for j in range(1, C+1):
+            MAP[i][j] += MAP[i-1][j]
+    for i in range(1, R+1):
+        for j in range(1, C+1):
+            MAP[i][j] += MAP[i][j-1]
+    
+    res = 0
+    for i in range(R-K):
+        for j in range(C-K):
+            tmp = (MAP[i+K+1][j+K+1] 
+                   + MAP[i][j] 
+                   - MAP[i][j+K+1] 
+                   - MAP[i+K+1][j])
+            res = max(res, tmp)
+
+    print(res)
 
 if __name__ == '__main__':
     main()
