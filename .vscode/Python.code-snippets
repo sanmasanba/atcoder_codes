@@ -81,7 +81,7 @@
 	"['a', 't', 'c', ...]": {
 		"prefix": "inputS",
 		"body": [
-			"S = list(input())",
+			"S = list(input().strip())",
 			"$1"
 		]
 	},
@@ -289,6 +289,52 @@
 				"\treturn fact[n] * (fact_inv[k] * fact_inv[n-k] % MOD1e7) % MOD1e7",
 		]
 	},
+	"行列累乗": {
+		"prefix": "mat_pow",
+		"body": [
+			"def mat_mult(A: List[T], B: List[T], mod: int=MOD1e7) -> List[T]:",
+				"\t\"\"\"行列の内積を計算",
+			"",
+				"\tArgs:",
+					"\t\tA (List[T]): tensor",
+					"\t\tB (List[T]): tensor",
+					"\t\tmod (int, optional): Defaults to MOD1e7.",
+			"",
+				"\tReturns:",
+					"\t\tList[T]: dot multiple",
+				"\t\"\"\"",
+				"\tassert len(A) == len(A[0])",
+				"\tassert len(B) == len(B[0])",
+				"\tN = len(A)",
+				"\tres = [[0] * N for _ in range(N)]",
+				"\tfor i in range(N):",
+					"\t\tfor j in range(N):",
+						"\t\t\tfor k in range(N):",
+							"\t\t\t\tres[i][j] = (res[i][j]+A[i][k]*B[k][j]%mod)%mod",
+				"\treturn res",
+			"",
+			"def mat_pow(mat:List[T], exp:int, mod: int=MOD1e7) -> List[T]:",
+				"\t\"\"\"mat pow",
+			"",
+				"\tArgs:",
+					"\t\tmat (List[T]): matrix",
+					"\t\texp (int): exponetial",
+					"\t\tmod (int, optional): MOD. Defaults to MOD1e7.",
+			"",
+				"\tReturns:",
+					"\t\tList[T]: mat pow",
+				"\t\"\"\"",
+				"\tN = len(mat)",
+				"\tres = [[1 if i == j else 0 for j in range(N)] for i in range(N)]",
+				"\twhile exp:",
+					"\t\tif exp%2:",
+						"\t\t\tres = mat_mult(res, mat, mod)",
+					"\t\tmat = mat_mult(mat, mat, mod)",
+					"\t\texp //= 2",
+				"\treturn res",
+		]
+	},
+
 
 	// 累積和
 	"一次元累積和": {
@@ -300,10 +346,11 @@
 	"二次元累積和": {
 		"prefix": "cumsum2d",
 		"body": [
-			"def cumsum2d(n:int, a:List[T]) -> List[T]:",
-				"\ttmp = [[0] * (n+1) for _ in range(n+1)]",
-				"\tfor i in range(n):",
-					"\t\tfor j in range(n):",
+			"def cumsum2d(a:List[T]) -> List[T]:",
+				"\th, w = len(a), len(a[0])",
+				"\ttmp = [[0] * (w+1) for _ in range(h+1)]",
+				"\tfor i in range(h):",
+					"\t\tfor j in range(w):",
 						"\t\t\ttmp[i+1][j+1] = (",
 							"\t\t\t\ttmp[i+1][j]",
 							"\t\t\t\t+ tmp[i][j+1]",

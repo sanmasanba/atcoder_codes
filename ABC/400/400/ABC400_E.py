@@ -17,66 +17,43 @@ sys.setrecursionlimit(10**6)
 input = sys.stdin.readline
 INF = float('inf')
 T = TypeVar('T')
-MOD998244353 = 998244353
-MOD1000000007 = 1000000007
+MOD998 = 998244353
+MOD1e7 = 1000000007
 
-#prime_test
-def prime_test(N):
-    res = True
+#prime_factorization
+def prime_factorization(N) -> list:
+    res = []
     for p in range(2, N):
         if p * p > N:
             break
         if N % p != 0:
             continue
-        if N % p == 0:
-            res = False
-            break
-    return res
+        e = 0
+        while N % p == 0:
+            e += 1
+            N //= p
+        res.append((p, e))
+        if 2 < len(res):
+            return False
+    if N != 1:
+        res.append((N, 1))
+    return len(res) == 2
+
+from math import isqrt
 
 #main
 def main():
     # intput
     Q = int(input())
+    P = [p**2 for p in range(6, 10**6) if prime_factorization(p)]
 
-    pp = [i * i for i in range(2, 10**3 + 10) if prime_test(i)]
-    res = []
+    print(len(P))
+
     for _ in range(Q):
-        query = int(input())
-        ans = 0
-        for i in range(len(pp)-1):
-            square_p = pp[i]
-            if query < square_p:
-                break
-            for j in range(i+1, len(pp)):
-                square_q = pp[j]
-                if query < square_p * square_q:
-                    break
-                p_2a = 1
-                while True:
-                    p_2a *= square_p
-                    if query < p_2a:
-                        break
-                    lo = 1
-                    hi = 0
-                    tmp = 1
-                    while True:
-                        tmp *= square_q
-                        hi += 1
-                        if tmp > query:
-                            break
-                    while hi - lo > 1:
-                        b = (lo + hi) // 2
-                        q_2b = pow(square_q, b)
-                        if p_2a * q_2b > query:
-                            hi = b
-                        else:
-                            lo = b
-                    q_2b = pow(square_q, lo)
-                    if p_2a * q_2b <= query:
-                        ans = max(ans, p_2a * pow(square_q, lo))
-        res.append(ans)
-    print(*res, sep='\n')
-
+        A = int(input())        
+        for p in P:
+            break
+    
 
 if __name__ == '__main__':
     main()
