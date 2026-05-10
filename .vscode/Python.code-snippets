@@ -1008,7 +1008,7 @@
 						"\t\t\tr >>= 1",
 					"\t\treturn res",
 			"",
-			"def seg_funnc(x, y):",
+			"def seg_func(x, y):",
 				"\treturn x + y",
 		]
 	},
