@@ -1,0 +1,41 @@
+site_name: 新・典型問題集
+site_description: 2021年以降のAtCoder ABCを題材にした、日本語の競技プログラミング学習集
+site_url: https://sanmasanba.github.io/atcoder_codes/
+repo_url: https://github.com/sanmasanba/atcoder_codes
+repo_name: sanmasanba/atcoder_codes
+
+theme:
+  name: material
+  language: ja
+  features:
+    - navigation.footer
+    - content.code.copy
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+# 解説内の典型をサイト内検索で先に見つけられないよう、検索索引を生成しない。
+plugins: []
+
+nav:
+  - はじめに: index.md
+  - 問題一覧: problems/index.md
+  - 更新履歴: changelog.md
+
+extra:
+  generator: false
