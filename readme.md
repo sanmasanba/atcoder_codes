@@ -21,6 +21,11 @@ atcoder_codes/
    └──memo/
 ```
 
+## 新・典型問題集
+
+近年の AtCoder ABC を題材にした、典型を伏せて取り組める120問の学習サイトです。  
+[問題一覧・解説を GitHub Pages で開く](https://sanmasanba.github.io/atcoder_codes/)
+
 # to do list
 - sliding windowの解説とsnipet
 - クラスカル法の解説
