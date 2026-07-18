@@ -1152,6 +1152,35 @@
 					"\t\treturn res",
 		]
 	},
+	"Trie木": {
+		"prefix": "TrieTree",
+		"body": [
+			"class Node:",
+				"\tdef __init__(self):",
+					"\t\tself.children = {}",
+					"\t\tself.is_end = False",
+					"\t\t",
+			"class Trie:",
+				"\tdef __init__(self):",
+					"\t\tself.root = Node()",
+			"",
+				"\tdef insert(self, word: str) -> None:",
+					"\t\tnode = self.root",
+					"\t\tfor ch in word:",
+						"\t\t\tif ch not in node.children:",
+							"\t\t\t\tnode.children[ch] = Node()",
+						"\t\t\tnode = node.children[ch]",
+					"\t\tnode.is_end = True",
+			"",
+				"\tdef search(self, word: str) -> bool:",
+					"\t\tnode = self.root",
+					"\t\tfor ch in word:",
+						"\t\t\tif ch not in node.children:",
+							"\t\t\t\treturn False",
+						"\t\t\tnode = node.children[ch]",
+					"\t\treturn node.is_end",
+		]
+	},	
 
 	//グラフ
 	"強連結成分の列挙": {
@@ -1506,5 +1535,20 @@
 			"",
 					"\t\treturn (h1, h2)",
 		]
-	}
+	},
+	"ランレングス圧縮": {
+		"prefix": "runlength_encoding",
+		"body": [
+			"def runlength_encoding(raw: Iterable[T]) -> List[Tuple[T, int]]:",
+				"\tl, n = 0, len(raw)",
+				"\tres = []",
+				"\twhile l < n:",
+					"\t\tr = l + 1",
+					"\t\twhile r < n and raw[l] == raw[r]:",
+						"\t\t\tr += 1",
+					"\t\tres.append((raw[l], r - l))",
+					"\t\tl = r",
+				"\treturn res",
+		]
+	},
 }
