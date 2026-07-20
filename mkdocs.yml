@@ -25,7 +25,11 @@ markdown_extensions:
   - attr_list
   - md_in_html
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
 
@@ -39,3 +43,7 @@ nav:
 
 extra:
   generator: false
+
+extra_javascript:
+  - https://unpkg.com/mermaid@10.9.5/dist/mermaid.min.js
+  - javascripts/mermaid.js

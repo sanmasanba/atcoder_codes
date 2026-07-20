@@ -1,7 +1,5 @@
 # 問題一覧
 
-問題を開く前に、典型名やカテゴリは表示しません。解説は解いた後に開いてください。
-
 ## Level 1
 
 | No. | 問題 | 解説 |
@@ -10,12 +8,10 @@
 | 002 | [問題を開く](https://atcoder.jp/contests/abc231/tasks/abc231_c) | [解説](002.md) |
 | 003 | [問題を開く](https://atcoder.jp/contests/abc249/tasks/abc249_d) | [解説](003.md) |
 | 004 | [問題を開く](https://atcoder.jp/contests/abc260/tasks/abc260_c) | [解説](004.md) |
-
 | 005 | [問題を開く](https://atcoder.jp/contests/abc235/tasks/abc235_d) | [解説](005.md) |
 | 006 | [問題を開く](https://atcoder.jp/contests/abc245/tasks/abc245_e) | [解説](006.md) |
 | 007 | [問題を開く](https://atcoder.jp/contests/abc250/tasks/abc250_e) | [解説](007.md) |
 | 008 | [問題を開く](https://atcoder.jp/contests/abc271/tasks/abc271_d) | [解説](008.md) |
-
 | 009 | [問題を開く](https://atcoder.jp/contests/abc241/tasks/abc241_e) | [解説](009.md) |
 | 010 | [問題を開く](https://atcoder.jp/contests/abc261/tasks/abc261_e) | [解説](010.md) |
 | 011 | [問題を開く](https://atcoder.jp/contests/abc286/tasks/abc286_e) | [解説](011.md) |
@@ -148,5 +144,3 @@
 | 118 | [問題を開く](https://atcoder.jp/contests/abc336/tasks/abc336_e) | [解説](118.md) |
 | 119 | [問題を開く](https://atcoder.jp/contests/abc337/tasks/abc337_e) | [解説](119.md) |
 | 120 | [問題を開く](https://atcoder.jp/contests/abc338/tasks/abc338_f) | [解説](120.md) |
-
-初版の120問を収録しています。今後は選定基準を保ちながら、より再利用性の高い問題への差し替え・解説の改訂を継続します。
