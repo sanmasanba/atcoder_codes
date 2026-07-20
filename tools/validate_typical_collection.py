@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import re
-import sys
 from pathlib import Path
 
 
@@ -12,10 +11,10 @@ DOCS = ROOT / "docs"
 INDEX = DOCS / "problems" / "index.md"
 REQUIRED_HEADINGS = (
     "## 問題リンク",
+    "## キーワード",
     "## 何に着目するか",
     "## 解法方針",
-    "## 実装要点",
-    "## 計算量",
+    "## tips",
     "## 典型・関連問題",
 )
 SPOILER_WORDS = ("二分探索", "DP", "動的計画法", "グラフ", "累積和", "UnionFind")
@@ -51,8 +50,20 @@ def main() -> None:
         for heading in REQUIRED_HEADINGS:
             if heading not in text:
                 fail(f"{number}: 必須見出しがありません: {heading}")
-        if "関連:" not in text:
-            fail(f"{number}: 関連問題リンクがありません")
+        related_section = re.search(
+            r"^## 典型・関連問題\s*$(.*?)(?=^## |\Z)",
+            text,
+            re.MULTILINE | re.DOTALL,
+        )
+        related_links = (
+            re.findall(r"\[[^]]+\]\([^)]+\)", related_section.group(1))
+            if related_section
+            else []
+        )
+        if len(related_links) < 3:
+            fail(f"{number}: 典型・関連問題を最低3つ列挙してください")
+        if re.search(r"\]\((?:\./|\.\./)?\d{3}\.md\)", related_section.group(1)):
+            fail(f"{number}: 関連問題にproblems内のMarkdownリンクは使用できません")
 
     expected = [f"{i:03}" for i in range(1, len(rows) + 1)]
     if numbers != expected:
