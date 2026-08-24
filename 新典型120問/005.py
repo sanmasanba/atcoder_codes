@@ -20,15 +20,34 @@ T = TypeVar('T')
 MOD998 = 998244353
 MOD1e7 = 1000000007
 
+def move(n):
+    tmp = list(str(n))
+    return int(''.join([tmp[-1]] + tmp[:-1]))
+
+def bfs(a, n):
+    stc = [(0, 1)]
+    used = [INF]*(10**7)
+    used[1] = 0
+    while stc:
+        st, x = heappop(stc)
+        if used[x] < st:
+            continue
+        y = a * x
+        res = st + 1
+        if y < 10**7 and res < used[y]:
+            used[y] = res
+            heappush(stc, (res, y))
+        y = move(x)
+        if x%10 > 0 and x >= 10 and res < used[y]:
+            used[y] = res
+            heappush(stc, (res, y))
+    return used[n] if used[n] < INF else -1
+
 # main
 def main():
     # intput
-    N = int(input())
-    for i in range(1, N+1):
-        if i%3 == 0:
-            print('Fizz')
-        else:
-            print(i)
+    a, N = map(int, input().split())
+    print(bfs(a, N))
 
 if __name__ == '__main__':
     main()

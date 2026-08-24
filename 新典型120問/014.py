@@ -23,12 +23,29 @@ MOD1e7 = 1000000007
 # main
 def main():
     # intput
-    N = int(input())
-    for i in range(1, N+1):
-        if i%3 == 0:
-            print('Fizz')
+    N, M, K = map(int, input().split())
+
+    dp = [1] * (M+1)
+    dp[0] = 0
+    for _ in range(1, N):
+        ndp = [0]*(M+1)
+        cumsum = [0] + list(accumulate(dp))
+        if K == 0:
+            ndp = [cumsum[-1]%MOD998] * (M+1)
+            ndp[0] = 0
         else:
-            print(i)
+            for i in range(1, M+1):
+                tmp = 0
+                if 0 <= i-K+1:
+                    tmp = (tmp + cumsum[i-K+1]) % MOD998
+                if i+K < len(cumsum):
+                    tmp = ((cumsum[-1] - cumsum[i+K]) % MOD998 + tmp ) % MOD998
+                ndp[i] = tmp
+        dp = ndp
+
+    res = 0
+    for x in dp: res = (res + x) % MOD998
+    print(res)
 
 if __name__ == '__main__':
     main()

@@ -23,12 +23,21 @@ MOD1e7 = 1000000007
 # main
 def main():
     # intput
-    N = int(input())
-    for i in range(1, N+1):
-        if i%3 == 0:
-            print('Fizz')
+    Q = int(input())
+    h = []
+    b = 0
+    res = []
+    for q in range(1, Q+1):
+        arg = input().split()
+
+        if arg[0] == '1':
+            heappush(h, int(arg[1])-b)
+        elif arg[0] == '2':
+            b += int(arg[1])
         else:
-            print(i)
+            x = heappop(h)
+            res.append(x + b)
+    print(*res, sep='\n')
 
 if __name__ == '__main__':
     main()

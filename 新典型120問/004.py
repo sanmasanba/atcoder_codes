@@ -23,12 +23,18 @@ MOD1e7 = 1000000007
 # main
 def main():
     # intput
-    N = int(input())
-    for i in range(1, N+1):
-        if i%3 == 0:
-            print('Fizz')
-        else:
-            print(i)
+    N, X, Y = map(int, input().split())
+    r = [0]*11
+    r[N] = 1
+    b = [0]*11
+    for i in range(N, 1, -1):
+        if 0 < r[i]:
+            r[i-1] += r[i]
+            b[i] += X * r[i]
+        if 0 < b[i]:
+            r[i-1] += b[i]
+            b[i-1] += Y * b[i]
+    print(b[1])
 
 if __name__ == '__main__':
     main()

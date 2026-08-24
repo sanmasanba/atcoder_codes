@@ -23,12 +23,14 @@ MOD1e7 = 1000000007
 # main
 def main():
     # intput
-    N = int(input())
-    for i in range(1, N+1):
-        if i%3 == 0:
-            print('Fizz')
-        else:
-            print(i)
+    N, Q = map(int, input().split())
+    A = list(map(int, input().split()))
+    A.sort()
+
+    for _ in range(Q):
+        x = int(input())
+        idx = bisect_left(A, x)
+        print(N-idx)
 
 if __name__ == '__main__':
     main()

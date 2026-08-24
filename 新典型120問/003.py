@@ -24,11 +24,23 @@ MOD1e7 = 1000000007
 def main():
     # intput
     N = int(input())
-    for i in range(1, N+1):
-        if i%3 == 0:
-            print('Fizz')
-        else:
-            print(i)
+    A = list(map(int, input().split()))
+    MAX = 2*10**5
+
+    cnt = Counter(A)
+    res = 0
+    # O(M): ただしMはmax(A)
+    for aj in range(1, MAX+1):
+        if aj not in cnt:
+            continue
+        # M//aj とすると、ajについて調和級数になるので計算量はO(MlogM)
+        for ak in range(1, MAX//aj+1):
+            ai = aj * ak
+            if ak not in cnt:
+                continue
+            # ai = aj * ak
+            res += cnt[ai] * cnt[aj] * cnt[ak]
+    print(res)
 
 if __name__ == '__main__':
     main()
