@@ -23,26 +23,21 @@ MOD1e7 = 1000000007
 # main
 def main():
     # intput
-    N, K = map(int, input().split())
+    N = int(input())
+    A = list([i+1, j] for i, j in enumerate(map(int, input().split())))
 
-    # DFS
-    def dfs(a: list, s: int):
-        # N-1 番目まで決まれば、Nは決まる(1段分のネストを減らせる)
-        if len(a) == N-1:
-            tmp = K - s
-            if tmp % N == 0:
-                print(*a, tmp//N)
-            return
-        
-        # 探索
-        # 最大値をこれで減らせる
-        m = len(a) + 1
-        for nxt in range(0, (K-s)//m+1):
-            a.append(nxt)
-            dfs(a, s + nxt*m)
-            a.pop()
+    while 1 < len(A):
+        M = len(A)//2
+        tmp = [0] * M
+        for m in range(M):
+            (i, a), (j, b) = A[2*m], A[2*m+1]
+            if a > b:
+                tmp[m] = (i, a)
+            else:
+                tmp[m] = (j, b)
+        A = tmp[:]
 
-    dfs([], 0)
-    
+    print(A[0][0])
+
 if __name__ == '__main__':
     main()

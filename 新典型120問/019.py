@@ -26,7 +26,23 @@ def main():
     N = int(input())
     A = list(map(int, input().split()))
 
-    print(sum(A[N//2:]))
+    res = 0
+    # i個まで選んだ場合で固定する
+    for i in range(1, N+1):
+        # j番目までの集合で、k個選んだ時に総和の法がlとなる個数
+        dp = [[[0]*i for _ in range(N+1)] for _ in range(N+1)]
+        dp[0][0][0] = 1
+        for j in range(N):
+            for k in range(i+1):
+                for l in range(i):
+                    # j を選ばない
+                    dp[j+1][k][l] = (dp[j+1][k][l] + dp[j][k][l]) % MOD998
+                    # j を選ぶ
+                    if i != k:
+                        dp[j+1][k+1][(l+A[j])%i] = (dp[j+1][k+1][(l+A[j])%i] + dp[j][k][l]) % MOD998
+        res = (res + dp[N][i][0]) % MOD998
+
+    print(res)
 
 if __name__ == '__main__':
     main()

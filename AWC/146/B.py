@@ -23,26 +23,17 @@ MOD1e7 = 1000000007
 # main
 def main():
     # intput
-    N, K = map(int, input().split())
+    H, W = map(int, input().split())
+    S = [list(map(int, input().split())) for _ in range(H)]
 
-    # DFS
-    def dfs(a: list, s: int):
-        # N-1 番目まで決まれば、Nは決まる(1段分のネストを減らせる)
-        if len(a) == N-1:
-            tmp = K - s
-            if tmp % N == 0:
-                print(*a, tmp//N)
-            return
-        
-        # 探索
-        # 最大値をこれで減らせる
-        m = len(a) + 1
-        for nxt in range(0, (K-s)//m+1):
-            a.append(nxt)
-            dfs(a, s + nxt*m)
-            a.pop()
+    sumH = list(sum(i) for i in S)
+    sumW = list(sum(i) for i in zip(*S))
 
-    dfs([], 0)
-    
+    res = -INF
+    for h in range(H):
+        for w in range(W):
+            res = max(res, sumH[h]+sumW[w]-S[h][w])
+    print(res)
+
 if __name__ == '__main__':
     main()

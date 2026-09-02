@@ -85,23 +85,38 @@ class SegmentTree:
         return res
 
 def seg_func(x, y):
-    return max(x, y)
+    return (x + y) % MOD998
+
+def mod_inverse(a, p):
+    return pow(a, p-2, p)
+
+# 考察
+# dp[i] := マスiからマスNに到達するまでに振る回数の期待値
+# 1) i で一回さいころを振ると、i, i+1, ..., i+Ai まで等確率で進む
+# -> dp[i] = (1 / (Ai + 1)) * (iからi+Aiまでの期待値の和) + 1
+# ※ 1/(Ai + 1) は、0以外の目が出る確率
+# 
+# 2) dp[i] を寄せるように整理
+# dp[i] (1 - (1 / (Ai + 1))) = (1 / (Ai + 1)) * (i+1からi+Aiまでの期待値の和) + 1
+# <-> (Ai / (1 + Ai))dp[i] = (1 / (Ai + 1)) * (i+1からi+Aiまでの期待値の和) + 1
+# <-> dp[i] = ((i+1からi+Aiまでの期待値の和) + (Ai + 1)) / A[i]
+# 
 
 # main
 def main():
     # intput
-    N, K = map(int, input().split())
-    A = [0]*(K+10)
-    for a in map(int, input().split()):
-        A[a-1] += 1
-    B = SegmentTree(A, seg_func, -INF)
+    N = int(input())
+    A = list(map(int, input().split()))
 
-    res = 0
-    for i in range(K):
-        a, b = A[i]+1, max(B.get(0, i), B.get(i+1, K+10))
-        if a >= b:
-            res += 1
-    print(res)
+    # dp[i] := マスiからマスNに到達するまでに振る回数の期待値
+    dp = SegmentTree([0] * (N+1), seg_func, 0)
+
+    for i in range(N-1, 0, -1):
+        n = dp.get(i+1, i+A[i-1]+1)
+        m = (n + A[i-1] + 1) % MOD998 * mod_inverse(A[i-1], MOD998)
+        dp.update(i, m % MOD998)
+
+    print(dp.get(1, 2))
 
 if __name__ == '__main__':
     main()
