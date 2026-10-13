@@ -20,16 +20,6 @@ T = TypeVar('T')
 MOD998 = 998244353
 MOD1e7 = 1000000007
 
-def runlength_encoding(raw: Iterable[T]) -> List[Tuple[T, int]]:
-    l, n = 0, len(raw)
-    res = []
-    while l < n:
-        r = l + 1
-        while r < n and raw[l] == raw[r]:
-            r += 1
-        res.append((raw[l], r - l))
-        l = r
-    return res
 
 # main
 def main():
@@ -38,21 +28,18 @@ def main():
     A = list(map(int, input().split()))
     B = list(map(int, input().split()))
     
-    res = []
-    a = A[:]
-    for i in range(N-1):
-        aij = (a[i] + a[i+1])%2
-        if aij != B[i]:
-            res.append(1)
-        else:
-            res.append(0)
-    
-    res = runlength_encoding(res)
-    ret = 0
-    for a, c in res:
-        if a == 1:
-            ret += (c+1)//2
-    print(ret)
+
+    def solve(a0):
+        ret = 0
+        a = [a0]
+        ret += 1 if a0 != A[0] else 0
+        for i in range(N-1):
+            a.append(B[i]^a[-1])
+            if A[i+1] != a[-1]:
+                ret += 1
+        return ret
+
+    print(min(solve(0), solve(1)))
 
 if __name__ == '__main__':
     main()

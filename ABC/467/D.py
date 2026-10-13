@@ -21,17 +21,21 @@ MOD998 = 998244353
 MOD1e7 = 1000000007
 
 def solve(px, py, qx, qy, rx, ry, sx, sy):
-    # 1) おなじ垂直二等分線を共有しているならtrue
-    f1 = (px-qx)*(ry-sy) == (rx-sx)*(py-qy)
-    f2 = (-(ry - sy)*((px*px - qx*qx) + (py*py - qy*qy)) 
-          == -(py - qy)*((rx*rx - sx*sx) + (ry*ry - sy*sy)))
-    if f1 and f2:
+    # 垂直二等分線の式で整理： Ax + By = C
+    # d(P, (x, y)) = d(Q, (x, y))
+    # => (x - Px)^2 + (y - Py)^2 = (x - Qx)^2 + (y - Qy)^2
+    # => x^2-2xPx+Px^2+y^2-2yPy+Py^2 = x^2-2xQx+Qx^2+y^2-2yQy+Qy^2
+    # => - 2xPx + Px^2 - 2yPy + Py^2 = - 2xQx + Qx^2 - 2yQy + Qy^2
+    # => 2(Qx - Px)x + 2(Qy - Py) = (Qx^2 + Qy^2) - (Px^2 + Py^2)
+    a1, b1, c1 = 2*(qx - px), 2*(qy - py), (qx*qx + qy*qy) - (px*px + py*py)
+    a2, b2, c2 = 2*(sx - rx), 2*(sy - ry), (sx*sx + sy*sy) - (rx*rx + ry*ry)
+
+    # 1) 傾きが異なるとき、どこかで交差する
+    if a1 * b2 != a2 * b1:
         return True
-    # 2) 傾きが異なるならtrue
-    elif not f1:
-        return True
-    else:
-        return False
+
+    # 2) 平行な時、同じ直線なら交差、そうでなければ交差しない
+    return (a1*c2 == a2*c1) and (b1*c2 == b2*c1)
 
 # main
 def main():

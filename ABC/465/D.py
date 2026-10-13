@@ -22,13 +22,22 @@ MOD1e7 = 1000000007
 
 def solve():
     X, Y, K= map(int, input().split())
-    
+
+    res = 0
+    while X != Y:
+        # 層の中で深いほうを操作する
+        if X < Y:
+            X, Y = Y, X
+        X //= K
+        res += 1
+    print(res)
 
 # main
 def main():
     # intput
     T = int(input())
-    for _ in range(T): solve()
+    for _ in range(T): 
+        solve()
 
 if __name__ == '__main__':
     main()

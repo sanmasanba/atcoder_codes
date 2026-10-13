@@ -42,14 +42,34 @@ def main():
     c = cumsum2d(S)
 
     def f(r1, c1, r2, c2):
-        return c[h][w] - c[i][w] - c[h][j] + c[i][j]
+        return c[r2][c2] - c[r1][c2] - c[r2][c1] + c[r1][c1]
 
     res = 0
-    for h in range(1, H+1):
-        for w in range(1, W+1):
-            for i in range(h):
-                if f(h, w, i, 0) < K or K < f(h, w, i, w-1):
-                    continue
+    cnt = [0] * (H*W+1)
+    for hh in range(H):
+        for hl in range(hh+1):
+            if f(hl, 0, hh+1, W) < K:
+                continue
+            cnt[0] = 1
+            used = [0]
+            for w in range(W):
+                # S0 = 0, Si = a0 + a1 + ... + a(i-1) とすると
+                # 区間 [l, r) の和は
+                #   al + a(l+1) + ... + a(r-1) = Sr - Sl
+                #
+                # これが K になる条件は
+                #   Sr - Sl = K
+                #   Sl = Sr - K
+                #
+                # よって、これまでに出現した累積和 Sl の回数をメモしておけば、
+                # r を固定したときに条件を満たす l の個数がわかる
+                sw = f(hl, 0, hh+1, w+1)
+                res += cnt[sw - K]
+                cnt[sw] += 1
+                used.append(sw)
+
+            for x in used:
+                cnt[x] = 0
                 
     print(res)
 
